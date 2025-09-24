@@ -1,0 +1,66 @@
+﻿@page "/problems"
+
+<PageTitle>Problem Browser</PageTitle>
+
+<div class="problem-card-grid">
+    @foreach (var problem in problems)
+    {
+        <div class="problem-card">
+            <div class="problem-card-header">
+                <span>@problem.ContestId</span>
+            </div>
+            <div class="problem-card-body">
+                <div class="problem-card-title">
+                    <a href="https://atcoder.jp/contests/@problem.ContestId/tasks/@problem.Id" target="_blank" title="AtCoderで問題を開く">
+                        @problem.Title
+                    </a>
+                </div>
+            </div>
+            <div class="problem-card-footer">
+                <span class="difficulty-badge @GetDifficultyClass(problem.Difficulty)">
+                    @(problem.Difficulty?.ToString() ?? "N/A")
+                </span>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private class ProblemDisplayModel
+    {
+        public string Id { get; set; }
+        public string ContestId { get; set; }
+        public string Title { get; set; }
+        public int? Difficulty { get; set; }
+    }
+
+    private List<ProblemDisplayModel> problems = new();
+
+    protected override void OnInitialized()
+    {
+        problems = new List<ProblemDisplayModel>
+        {
+            new ProblemDisplayModel { Id = "abc086_a", ContestId = "abc086", Title = "A - Product", Difficulty = 28 },
+            new ProblemDisplayModel { Id = "abc081_b", ContestId = "abc081", Title = "B - Shift only", Difficulty = 208 },
+            new ProblemDisplayModel { Id = "abc087_b", ContestId = "abc087", Title = "B - Coins", Difficulty = 450 },
+            new ProblemDisplayModel { Id = "abc129_c", ContestId = "abc129", Title = "C - Typical Stairs", Difficulty = 897 },
+            new ProblemDisplayModel { Id = "abc138_d", ContestId = "abc138", Title = "D - Ki", Difficulty = 1255 },
+            new ProblemDisplayModel { Id = "abc125_d", ContestId = "abc125", Title = "D - Flipping Signs", Difficulty = 1679 },
+            new ProblemDisplayModel { Id = "abc140_e", ContestId = "abc140", Title = "E - Second Sum", Difficulty = 2055 },
+            new ProblemDisplayModel { Id = "abc130_f", ContestId = "abc130", Title = "F - Minimum Bounding Box", Difficulty = 2500 }
+        };
+    }
+
+    private string GetDifficultyClass(int? difficulty)
+    {
+        if (difficulty == null) return "difficulty-gray";
+        if (difficulty < 400) return "difficulty-gray";
+        if (difficulty < 800) return "difficulty-brown";
+        if (difficulty < 1200) return "difficulty-green";
+        if (difficulty < 1600) return "difficulty-cyan";
+        if (difficulty < 2000) return "difficulty-blue";
+        if (difficulty < 2400) return "difficulty-yellow";
+        if (difficulty < 2800) return "difficulty-orange";
+        return "difficulty-red";
+    }
+}
